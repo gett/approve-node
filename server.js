@@ -19,7 +19,8 @@ var SECRET = 'slfjasfo87234ifgkj';
 
 app.use(root.json);
 app.use(root.query);
-app.use('/base.css', function(req, res, next) {
+
+app.use('/css/base.css', function(req, res, next) {
 	var parser = new(less.Parser);
 
 	fs.readFile('./app/base.css', 'utf-8', function(err, data) {
@@ -40,7 +41,7 @@ app.use('/base.css', function(req, res, next) {
 		});
 	});
 });
-app.use('/index.js', rex('./app/index.js', {
+app.use('/js', rex('app', {
 	dependencies: {
 		jQuery: 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
 	}
