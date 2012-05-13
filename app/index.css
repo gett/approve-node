@@ -1,5 +1,5 @@
 /* Definitions */
-@beige: #f5f6e7;
+@component: #f5f6e7;
 @border: #ccc;
 @blackish: #333;
 @standard: #7cc0d5;
@@ -14,6 +14,7 @@
 @grey: #484848;
 @greyText: #666;
 
+
 /* LESS mixins */
 .rounded-corners (@radius: 5px) {
 	border-radius: @radius;
@@ -25,6 +26,7 @@
 	background: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
 	background: -moz-linear-gradient(top, @from, @to);
 }
+
 
 /* CSS */
 html, body {
@@ -45,13 +47,13 @@ h2 {
 	outline: none;
 	border: none;
 	font-size: 16px;
-	padding: 5px;
+	padding: 8px;
 	margin-top: 10px;
 }
 .component {
 	.rounded-corners(3px);
 
-	background-color: @beige;
+	background-color: @component;
 	border: 1px solid @border;
 	padding: 30px 40px;
 }
