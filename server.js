@@ -3,10 +3,12 @@ var root = require('root');
 var rex = require('rex');
 var common = require('common');
 var db = require('mongojs').connect('approve:qweqwe@staff.mongohq.com:10075/approve-node', ['users']);
-var less = require('connect-lesscss');
 var request = require('request');
 var qs = require('querystring');
+var fs = require('fs');
 var crypto = require('crypto');
+var marked = require('marked');
+var less = require('less');
 
 var app = root();
 var template = pejs();
@@ -17,7 +19,27 @@ var SECRET = 'slfjasfo87234ifgkj';
 
 app.use(root.json);
 app.use(root.query);
-app.use('/index.css', less('./app/index.css'));
+app.use('/index.css', function(req, res, next) {
+	var parser = new(less.Parser);
+
+	fs.readFile('./app/index.css', 'utf-8', function(err, data) {
+		if (err) return next(err);
+
+		parser.parse(data, function(err, tree) {
+			if (err) return next(err);
+
+			try {
+				data = tree.toCSS();				
+			} catch (err) {
+				return next(new Error('Line '+err.line+': '+err.message));
+			}
+
+			res.setHeader('content-type', 'text/css');
+			res.setHeader('content-length', Buffer.byteLength(data));
+			res.end(data);
+		});
+	});
+});
 app.use('/index.js', rex('./app/index.js', {
 	dependencies: {
 		jQuery: 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'
@@ -102,8 +124,30 @@ app.get('/', function(req, res, onerror) {
 	], onerror);
 });
 
-app.get('/modules/{name}', function(req, res) {
+app.get('/modules/{name}', function(req, res, onerror) {
+	common.step([
+		function(next) {
+			request('http://search.npmjs.org/api/'+req.params.name, {
+				json: true
+			}, next);
+		},
+		function(response) {
+			if (response.statusCode !== 200) {
+				res.send(response.statusCode, 'Module could not be loaded');
+				return;
+			}
 
+			var mod = response.body;
+			var readme = mod.readme || mod.versions[mod['dist-tags'].latest].readme;
+
+			if (!readme) {
+				res.send(mod);
+				return;
+			}
+
+			res.render('app/module.html', {readme:marked(readme)});
+		}
+	], onerror);
 });
 
 app.get('/signout', function(req, res) {
