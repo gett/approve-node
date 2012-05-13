@@ -4,6 +4,7 @@ var less = require('connect-lesscss');
 var rex = require('rex');
 var request = require('request');
 var common = require('common');
+var qs = require('querystring');
 
 var app = root();
 var template = pejs();
@@ -29,9 +30,14 @@ app.fn('response.render', function(filename, options) {
 	});
 });
 app.fn('response.send', function(statusCode, message) {
-	if (!message && typeof statusCode === 'string') {
+	if (!message && typeof statusCode !== 'number') {
 		message = statusCode;
 		statusCode = 200;
+	}
+
+	if (typeof message === 'object') {
+		this.json(statusCode, message);
+		return;
 	}
 
 	message = message || '';
@@ -56,8 +62,7 @@ app.get('/authorized', function(req, res, onerror) {
 
 	common.step([
 		function(next) {
-			request.post({
-				url: 'https://github.com/login/oauth/access_token',
+			request.post('https://github.com/login/oauth/access_token', {
 				qs: {
 					client_id: GITHUB_ID,
 					client_secret: GITHUB_SECRET,
@@ -71,8 +76,16 @@ app.get('/authorized', function(req, res, onerror) {
 				return;
 			}
 
-			console.log(response.body);
-			res.send(response.body);
+			request.post('https://api.github.com/user', {
+				qs: {
+					access_token: qs.parse(response.body).access_token
+				},
+				json: true
+			}, next);
+		},
+		function(user) {
+			console.log(user);
+			res.send(user);
 		}
 	], onerror);
 });
