@@ -19,10 +19,10 @@ var SECRET = 'slfjasfo87234ifgkj';
 
 app.use(root.json);
 app.use(root.query);
-app.use('/index.css', function(req, res, next) {
+app.use('/base.css', function(req, res, next) {
 	var parser = new(less.Parser);
 
-	fs.readFile('./app/index.css', 'utf-8', function(err, data) {
+	fs.readFile('./app/base.css', 'utf-8', function(err, data) {
 		if (err) return next(err);
 
 		parser.parse(data, function(err, tree) {
@@ -134,6 +134,9 @@ app.get('/static/*', function(req, res, onerror) {
 
 		res.end(data);
 	});
+});
+app.get('/guide', function(req, res) {
+	res.render('guide.html');
 });
 app.get('/modules/{name}', function(req, res, onerror) {
 	common.step([
