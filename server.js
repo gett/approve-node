@@ -23,8 +23,13 @@ app.fn('response.render', function(filename, options) {
 	});
 });
 
-app.get('/', function(req, res) {
-	res.render('app/index.html');
+app.get('/', function(request, response) {
+	response.render('app/index.html');
+});
+
+app.get('/authorized', function(request, response) {
+	console.log('authorized', request.headers);
+	response.end('hello wordly world');
 });
 
 app.listen(8080);
