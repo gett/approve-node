@@ -5,7 +5,7 @@ var rex = require('rex');
 var request = require('request');
 var common = require('common');
 var qs = require('querystring');
-var db = require('mongojs').connect('approve:qweqwe@staff.mongohq.com:10075/approve-node', ['users', 'approves']);
+var db = require('mongojs').connect('approve:qweqwe@staff.mongohq.com:10075/approve-node', ['users']);
 
 var app = root();
 var template = pejs();
@@ -92,9 +92,7 @@ app.get('/authorized', function(req, res, onerror) {
 				return;
 			}
 
-			user._id = user.id;
-			
-			db.users.update({_id:user.id}, {$set:user}, {upsert:true}, next);
+			db.users.update({id:user.id}, {$set:user}, {upsert:true}, next);
 		},
 		function() {
 			res.send(user);
