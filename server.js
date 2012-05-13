@@ -1,9 +1,13 @@
 var pejs = require('pejs');
 var root = require('root');
+var less = require('connect-lesscss');
+
 var app = root();
 var template = pejs();
 
 app.use(root.json);
+app.use('/index.css', less('./app/index.css'));
+
 app.fn('response.render', function(filename, options) {
 	var self = this;
 
