@@ -110,8 +110,6 @@ app.fn('response.redirect', function(url) {
 	this.end();
 });
 
-
-
 app.get('/', function(req, res, onerror) {
 	if (!req.id) {
 		res.render('index.html');

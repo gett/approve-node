@@ -1,12 +1,7 @@
 <%- @render('/base.html') %>
 <%{ content %>
 	<div id='index'>
-		<div class='filler-120'></div>
-		<div class='component'>
-			<h2>Find community approved Node modules</h2>
-			<input type='text' class='search' placeholder='Type to search...'>
-		</div>
-		<div class='filler-50'></div>
+		<%- @render('/widgets/search.html') %>
 		<div class='help-us'>
 			<h1>We want to help new Node developers</h1>
 			<div class='left git-logo'></div>

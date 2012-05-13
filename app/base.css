@@ -1,5 +1,5 @@
 /* Definitions */
-@component: #f9f9f8;
+@widget: #f9f9f8;
 @border: #ccc;
 @blackish: #333;
 @standard: #7cc0d5;
@@ -61,10 +61,10 @@ h2 {
 	margin-top: 10px;
 	border: 1px solid #ccc;
 }
-.component {
+.widget {
 	.rounded-corners(3px);
 
-	background-color: @component;
+	background-color: @widget;
 	border: 1px solid @border;
 	padding: 30px 40px;
 }
