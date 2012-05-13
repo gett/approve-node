@@ -27,6 +27,16 @@
 	background: -moz-linear-gradient(top, @from, @to);
 }
 
+#markdown {
+	pre {
+		background-color: #f8f8f8;
+		padding: 10px;
+		font: 13px 'Bitstream Vera Sans Mono', 'Courier',  monospace;
+		line-height: 19px;
+		border: 1px solid #ccc;
+	}
+}
+
 
 /* CSS */
 html, body {
