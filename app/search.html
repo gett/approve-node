@@ -1,0 +1,6 @@
+<%- @render('/base.html') %>
+<%{ content %>
+	<% modules.forEach(function(mod) { %>
+		<div><a href="/modules/<%- encodeURIComponent(mod) %>"><%= mod %></a></div>
+	<% }) %>	
+<%} %>
