@@ -160,7 +160,7 @@ app.get('/modules/{name}', function(req, res, onerror) {
 				return;
 			}
 
-			res.render('module.html', {readme:marked(readme)});
+			res.render('module.html', {readme:marked(readme), name:mod._id});
 		}
 	], onerror);
 });
