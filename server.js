@@ -76,7 +76,7 @@ app.get('/authorized', function(req, res, onerror) {
 				return;
 			}
 			console.log(qs.parse(response.body).access_token)
-			request.get('https://api.github.com/users', {
+			request.get('https://api.github.com/user', {
 				qs: {
 					access_token: qs.parse(response.body).access_token
 				},
