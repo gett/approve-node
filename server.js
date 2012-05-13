@@ -111,7 +111,7 @@ app.fn('response.redirect', function(url) {
 
 app.get('/', function(req, res, onerror) {
 	if (!req.id) {
-		res.render('app/index.html');
+		res.render('index.html');
 		return;
 	}
 
@@ -120,7 +120,7 @@ app.get('/', function(req, res, onerror) {
 			db.users.findOne({id:req.id}, next);
 		},
 		function(user) {
-			res.render('app/home.html', user);
+			res.render('home.html', user);
 		}
 	], onerror);
 });
@@ -156,9 +156,25 @@ app.get('/modules/{name}', function(req, res, onerror) {
 				return;
 			}
 
-			res.render('app/module.html', {readme:marked(readme)});
+			res.render('module.html', {readme:marked(readme)});
 		}
 	], onerror);
+});
+app.get('/search/*', function(req, res, onerror) {
+	var query = req.params.wildcard.split(' ')[0];
+	var url = 'http://search.npmjs.org/_list/search/search?startkey=%22'+query+'%22&endkey=%22'+query+'ZZZZZZZZZZZZZZZZZZZ%22&limit=25';
+
+	request(url, {
+		json: true
+	}, function(err, response) {
+		if (err) return onerror(err);
+
+		var modules = response.statusCode !== 200 ? [] : response.body.rows.map(function(item) {
+			return item.key;
+		});
+
+		res.render('search.html', {modules:modules});
+	});
 });
 app.get('/signout', function(req, res) {
 	res.setHeader('set-cookie', 'id=0; expires Thu, 01 Jan 1970 00:00:00 GMT');

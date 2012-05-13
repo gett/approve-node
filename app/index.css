@@ -1,5 +1,5 @@
 /* Definitions */
-@component: #f5f6e7;
+@component: #F9F9F8;
 @border: #ccc;
 @blackish: #333;
 @standard: #7cc0d5;
@@ -47,8 +47,9 @@ h2 {
 	outline: none;
 	border: none;
 	font-size: 16px;
-	padding: 8px;
+	padding: 12px;
 	margin-top: 10px;
+	border: 1px solid #ccc;
 }
 .component {
 	.rounded-corners(3px);
