@@ -34,7 +34,7 @@ app.use('/index.css', function(req, res, next) {
 				return next(new Error('Line '+err.line+': '+err.message));
 			}
 
-			res.setHeader('content-type', 'text/css');
+			res.setHeader('content-type', 'text/css; charset=utf-8');
 			res.setHeader('content-length', Buffer.byteLength(data));
 			res.end(data);
 		});
@@ -76,6 +76,7 @@ app.fn('response.render', function(filename, options) {
 
 	template.render(filename, options, function(err, data) {
 		if (err) return self.next(err.code !== 'ENOENT' && err);
+		self.setHeader('content-type', 'text/html; charset=utf-8');
 		self.end(data);
 	});
 });
