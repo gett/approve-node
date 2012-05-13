@@ -11,7 +11,7 @@ var marked = require('marked');
 var less = require('less');
 
 var app = root();
-var template = pejs();
+var template = pejs('./app');
 
 var GITHUB_ID = 'e411408f92365f7bbf0a';
 var GITHUB_SECRET = '6795299bd3f3c24e7af6275f4483cd11e892c152';
