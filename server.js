@@ -83,9 +83,9 @@ app.get('/authorized', function(req, res, onerror) {
 				json: true
 			}, next);
 		},
-		function(user) {
-			console.log(user);
-			res.send(user);
+		function(response) {
+			console.log(response.body);
+			res.send(response.body);
 		}
 	], onerror);
 });
