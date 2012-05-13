@@ -3,6 +3,7 @@ var root = require('root');
 var less = require('connect-lesscss');
 var rex = require('rex');
 var request = require('request');
+var common = require('common');
 
 var app = root();
 var template = pejs();
