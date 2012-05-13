@@ -1,14 +1,13 @@
+var pejs = require('pejs');
 var root = require('root');
 var app = root();
-
-var hogan = require('hogan.js');
-var fs = require('fs');
+var template = pejs();
 
 app.use(root.json);
 app.fn('response.render', function(filename, options) {
 	var self = this;
 
-	fs.readFile(filename, 'utf-8', function(err, data) {
+	template.render(filename, options, function(err, data) {
 		if (err) return self.next(err.code !== 'ENOENT' && err);
 		self.end(data);
 	});
