@@ -259,7 +259,7 @@ app.auth.get('/approves', function(req, res, onerror) {
 		}
 	], onerror);
 });
-app.auth.get('/approves/{name}', function(req, res, onerror) {
+app.auth.post('/approves/{name}', function(req, res, onerror) {
 	var name = req.params.name;
 
 	common.step([
@@ -290,7 +290,7 @@ app.auth.get('/approves/{name}', function(req, res, onerror) {
 		}
 	], onerror);
 });
-app.auth.get('/approves/{name}/destroy', function(req, res, onerror) {
+app.auth.post('/approves/{name}/destroy', function(req, res, onerror) {
 	var name = req.params.name;
 
 	common.step([
