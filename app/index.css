@@ -1,0 +1,26 @@
+/* Definitions */
+@beige: #f5f6e7;
+@border: #ccc;
+@blackish: #333;
+
+/* LESS mixins */
+.rounded-corners (@radius: 5px) {
+	border-radius: @radius;
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+}
+
+
+/* CSS */
+html, body {
+	overflow-y: scroll;
+	font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Sans', 'Sans-serif';
+	font-size: 13px;
+	color: @blackish;
+}
+.component {
+	.rounded-corners(3px);
+
+	background-color: @beige;
+	border: 1px solid @border;
+}
