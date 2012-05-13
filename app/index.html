@@ -1,14 +1,25 @@
 <%- @render('/base.html') %>
 <%{ content %>
-	<div class='filler-120'></div>
-	<div class='component'>
-		<h2>Find community approved Node modules</h2>
-		<input type='text' class='search' placeholder='Type to search'>
+	<div id='index'>
+		<div class='filler-120'></div>
+		<div class='component'>
+			<h2>Find community approved Node modules</h2>
+			<input type='text' class='search' placeholder='Type to search'>
+		</div>
+		<div class='filler-50'></div>
+		<div class='help-us'>
+			<h1>We want to help new Node developers</h1>
+			<div class='left git-logo'></div>
+			<div class='left info'>
+				<p>But we need your help to do this. Please take a minute of your time to find up to 10 Node modules that you approve of and think that others should know about.</p>
+				<a class='button continue' href='https://github.com/login/oauth/authorize?client_id=e411408f92365f7bbf0a'>✓ Yes, I want to help</a>
+				<p class='right link'>Read more</p>
+			</div>
+			<div class='clear'></div>
+			<div class='read-more hidden'>
+				<p>Node have great package management with npm. With 10,000 modules it's easy to say that the success is overwhelming. But a problem has begun to occur. New developers have a hard time figuring out which modules to use.</p>
+				<p>This is why we want us, the Node community, to help the newcomers. </p>
+			</div>
+		</div>
 	</div>
-	<div class='filler-50'></div>
-	<div class='component'>
-		<h1>We want to help new Node developers</h1>
-		<p>Node have great package management with npm. However many new developers have a hard time figuring out which modules to use. They may be able to find 20 different Mongodb modules, but which ones are actually being used actively by the community? This is the idea behind this site. A way for the community to keep track of which modules is being used.</p>
-	</div>
-	<a class='button' href='https://github.com/login/oauth/authorize?client_id=e411408f92365f7bbf0a'>Log in with Github</a>
 <%} %>

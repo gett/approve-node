@@ -124,7 +124,17 @@ app.get('/', function(req, res, onerror) {
 		}
 	], onerror);
 });
+app.get('/static/*', function(req, res, onerror) {
+	// TODO - add real static middleware
+	fs.readFile('public/'+req.params.wildcard, function(err, data) {
+		if (err) {
+			onerror(err);
+			return;
+		}
 
+		res.end(data);
+	});
+});
 app.get('/modules/{name}', function(req, res, onerror) {
 	common.step([
 		function(next) {
@@ -150,12 +160,10 @@ app.get('/modules/{name}', function(req, res, onerror) {
 		}
 	], onerror);
 });
-
 app.get('/signout', function(req, res) {
 	res.setHeader('set-cookie', 'id=0; expires Thu, 01 Jan 1970 00:00:00 GMT');
 	res.redirect('/');
 });
-
 app.get('/authorized', function(req, res, onerror) {
 	var code = req.query.code;
 	var cookie;

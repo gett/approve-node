@@ -57,6 +57,18 @@ h2 {
 	border: 1px solid @border;
 	padding: 30px 40px;
 }
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+.clear {
+	clear: both;
+}
+.hidden {
+	display: none;
+}
 .cursor {
 	cursor: hand;
 	cursor: pointer;
@@ -162,4 +174,28 @@ h2 {
 }
 .filler-120 {
 	height: 120px;
+}
+#index {
+	.help-us {
+		width: 730px;
+		margin: 0 auto;
+	}
+	.git-logo {
+		background: url(/static/images/githubcat_200.png);
+		margin-right: 30px;
+		width: 200px;
+		height: 200px;
+	}
+	.info {
+		width: 500px;
+		font-size: 14px;
+		line-height: 20px;
+	}
+	.continue {
+		height: 30px;
+		width: 300px;
+		margin: 30px auto;
+		line-height: 30px;
+		font-size: 16px;
+	}
 }
