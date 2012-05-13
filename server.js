@@ -75,7 +75,7 @@ app.get('/authorized', function(req, res, onerror) {
 				res.send(response.statusCode, 'Did not auth with Github');
 				return;
 			}
-
+			console.log(qs.parse(response.body).access_token)
 			request.post('https://api.github.com/user', {
 				qs: {
 					access_token: qs.parse(response.body).access_token
