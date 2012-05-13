@@ -1,12 +1,6 @@
-<html>
-	<head>
-		<title></title>
-		<script type='text/javascript' src='index.js'></script>
-		<link rel='stylesheet' type='text/css' href='index.css'>
-	</head>
-	<body>
-		Hey <%= login %>,<br><br>
+<%- @render('./app/base.html') %>
+<%{ content %>
+	Hey <%= login %>,<br><br>
 
-		<a href='/signout'>Sign out</a>
-	</body>
-</html>
+	<a href='/signout'>Sign out</a>
+<%} %>
