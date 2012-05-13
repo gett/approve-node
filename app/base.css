@@ -1,5 +1,5 @@
 /* Definitions */
-@component: #F9F9F8;
+@component: #f9f9f8;
 @border: #ccc;
 @blackish: #333;
 @standard: #7cc0d5;
@@ -186,6 +186,9 @@ h2 {
 .filler-120 {
 	height: 120px;
 }
+
+
+/* Pages */
 #index {
 	.help-us {
 		width: 730px;
