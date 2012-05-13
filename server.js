@@ -5,6 +5,7 @@ var rex = require('rex');
 var request = require('request');
 var common = require('common');
 var qs = require('querystring');
+var db = require('mongojs').connect('approve:qweqwe@staff.mongohq.com:10075/approve-node', ['users', 'approves']);
 
 var app = root();
 var template = pejs();
@@ -75,7 +76,7 @@ app.get('/authorized', function(req, res, onerror) {
 				res.send(response.statusCode, 'Did not auth with Github');
 				return;
 			}
-			console.log(qs.parse(response.body).access_token)
+
 			request.get('https://api.github.com/user', {
 				qs: {
 					access_token: qs.parse(response.body).access_token
@@ -83,9 +84,21 @@ app.get('/authorized', function(req, res, onerror) {
 				json: true
 			}, next);
 		},
-		function(response) {
-			console.log(response.body);
-			res.send(response.body);
+		function(response, next) {
+			var user = response.body;
+
+			if (response.statusCode !== 200) {
+				res.send(response.statusCode, 'Error fetching user data');
+				return;
+			}
+
+			user._id = user.id;
+			
+			db.users.update({_id:user.id}, {$set:user}, {upsert:true}, next);
+		},
+		function() {
+			res.send(user);
+			console.log('returned');
 		}
 	], onerror);
 });
