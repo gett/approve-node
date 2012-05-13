@@ -28,6 +28,19 @@ app.fn('response.render', function(filename, options) {
 		self.end(data);
 	});
 });
+app.fn('response.send', function(statusCode, message) {
+	if (!message && typeof statusCode === 'string') {
+		message = statusCode;
+		statusCode = 200;
+	}
+
+	message = message || '';
+
+	this.statusCode = statusCode;
+	this.setHeader('content-type', /2\d\d/.test(statusCode) ? 'text/html' : 'text/plain');
+	this.setHeader('content-length', Buffer.byteLength(message));
+	this.end(message);
+});
 
 app.get('/', function(req, res) {
 	res.render('app/index.html');
@@ -37,8 +50,7 @@ app.get('/authorized', function(req, res, onerror) {
 	var code = req.query.code;
 
 	if (!code) {
-		res.writeHead(400);
-		res.end('Need token');
+		res.send(400, 'Need token');
 		return;
 	}
 
@@ -54,9 +66,13 @@ app.get('/authorized', function(req, res, onerror) {
 			}, next);
 		},
 		function(response, next) {
+			if (response.statusCode !== 200) {
+				res.send(response.statusCode, 'Did not auth with Github');
+				return;
+			}
+
 			console.log(response.body);
-			res.setHeader('content-type', 'text/plain');
-			res.end(response.body);
+			res.send(response.body);
 		}
 	], onerror);
 });
