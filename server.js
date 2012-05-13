@@ -10,7 +10,7 @@ var crypto = require('crypto');
 var marked = require('marked');
 var less = require('less');
 
-var app = root();
+var app = root('auth');
 var template = pejs('./app');
 
 var GITHUB_ID = 'e411408f92365f7bbf0a';
@@ -109,6 +109,8 @@ app.fn('response.redirect', function(url) {
 	this.setHeader('location', url);
 	this.end();
 });
+
+
 
 app.get('/', function(req, res, onerror) {
 	if (!req.id) {
@@ -227,11 +229,80 @@ app.get('/authorized', function(req, res, onerror) {
 			cookie = user.id+'.'+Date.now();
 			cookie += '.'+crypto.createHmac('sha256', SECRET).update(cookie).digest('hex');
 
-			db.users.update({id:user.id}, {$set:user}, {upsert:true}, next);
+			db.users.findAndModify({
+				query: {id:user.id},
+				update: {$set:user},
+				upsert:true
+			}, next);
+		},
+		function(user, next) {
+			res.setHeader('set-cookie', 'id='+cookie+'; expires='+new Date(Date.now() + 14*24*60*60*1000).toUTCString());
+			res.redirect(Object.keys(user).length ? '/' : '/guide');
+		}
+	], onerror);
+});
+
+app.auth.use(function(req, res, next) {
+	if (!req.id) {
+		res.send(403);
+		return;
+	}
+	next();
+});
+app.auth.get('/approves', function(req, res, onerror) {
+	common.step([
+		function(next) {
+			db.users.findOne({id:req.id}, {approves:1}, next);
+		},
+		function(user, next) {
+			res.send(user.approves);
+		}
+	], onerror);
+});
+app.auth.get('/approves/{name}', function(req, res, onerror) {
+	var name = req.params.name;
+
+	common.step([
+		function(next) {
+			db.users.findOne({id:req.id}, {approves:1}, next);
+		},
+		function(user, next) {
+			user.approves = user.approves || {};
+
+			if (user.approves[name]) {
+				res.end();
+				return;
+			}
+
+			if (Object.keys(user.approves).length >= 10) {
+				res.json(412, 'Too many modules approved');
+				return;
+			}
+
+			var set = {};
+
+			set['approves.'+name +'.created'] = Math.floor(Date.now() / 1000);
+
+			db.users.update({id:req.id}, {$set:set}, next);
+		},
+		function(next) {
+			res.end();
+		}
+	], onerror);
+});
+app.auth.get('/approves/{name}/destroy', function(req, res, onerror) {
+	var name = req.params.name;
+
+	common.step([
+		function(next) {
+			var unset = {};
+
+			unset['approves.'+name] = 1;
+
+			db.users.update({id:req.id}, {$unset:unset}, next);
 		},
 		function() {
-			res.setHeader('set-cookie', 'id='+cookie+'; expires='+new Date(Date.now() + 14*24*60*60*1000).toUTCString());
-			res.redirect('/');
+			res.end();
 		}
 	], onerror);
 });
